@@ -1,80 +1,89 @@
-const arrSelection = ['rock', 'paper','scissors'];
-let userScore=0;
-let compScore=0;
+const arrSelection = ['rock', 'paper', 'scissors'];
+let userScore = 0;
+let compScore = 0;
+let counter = 0;
+const rounds = document.getElementById("rounds");
+const userImage = document.getElementById("userSelect");
+const compImage = document.getElementById("compSelect");
+const yourScore = document.getElementById("userScore");
+const oppScore = document.getElementById("oppScore");
 
-function computerPlay(){
-    let compSelection= Math.floor(Math.random()*3);
-    
-    if(compSelection===0)
-    return "rock";
-    else if (compSelection===1)
-    return 'paper';
-    else if (compSelection===2)
-    return "scissors";
+function computerPlay() {
+    let compSelection = Math.floor(Math.random() * 3);
+
+    if (compSelection === 0)
+        return "rock";
+    else if (compSelection === 1)
+        return 'paper';
+    else if (compSelection === 2)
+        return "scissors";
 }
 
-function playRound(playerSelection,computerSelection){
-     if(playerSelection!==computerSelection)
-     {
-        if((playerSelection==='rock'&&computerSelection==='paper') || (playerSelection==='paper'&&computerSelection==='scissors') || (playerSelection==='scissors'&&computerSelection==='rock'))
-        {
-            compScore+=1;
-            console.log(`You lose! ${computerSelection.replace(computerSelection[0],computerSelection[0].toUpperCase())} beats ${playerSelection}`);
-        }
-        else if((playerSelection==='scissors'&&computerSelection==='paper') || (playerSelection==='paper'&&computerSelection==='rock') || (playerSelection==='rock'&&computerSelection==='scissors'))
-        {
-            userScore+=1;
-            console.log(`You win! ${playerSelection.replace(playerSelection[0],playerSelection[0].toUpperCase())} beats ${computerSelection}`);
-        }
-        
-     }
-     else
-        console.log(`No one wins. You both have ${computerSelection}`);
-}
+function playRound(e) {
 
-function game(){
-    let computerSelection = null;
-    let playerSelection = null;
-    let check=0;
-    compScore=0;
-    userScore=0;
-    
-    if(confirm("Start the game?"))
-    {
-        for(let i=0;i<5;i++)
-        {
-            computerSelection=computerPlay();
-            playerSelection = prompt("Enter your bet:", "Rock,paper or scissors");
-            if(playerSelection!==null)
-            {
-                playerSelection=playerSelection.toLowerCase();
-                check = arrSelection.indexOf(playerSelection);
+    counter += 1;
+
+    if (counter < 6) {
+
+        let computerSelection = computerPlay();
+        let playerSelection = e.currentTarget.id;
+        const user = document.querySelector('.user');
+        const opponent = document.querySelector('.opponent');
+
+        //Remove elements every click;
+        userImage.setAttribute('src', "");
+        compImage.setAttribute('src', "");
+
+        userImage.setAttribute('src', `./images/${playerSelection}.png`);
+        user.insertAdjacentElement('afterbegin', userImage);
+
+        compImage.setAttribute('src', `./images/${computerSelection}.png`);
+        opponent.insertAdjacentElement('afterbegin', compImage);
+
+
+
+        if (playerSelection !== computerSelection) {
+            if ((playerSelection === 'rock' && computerSelection === 'paper') || (playerSelection === 'paper' && computerSelection === 'scissors') || (playerSelection === 'scissors' && computerSelection === 'rock')) {
+                compScore += 1;
+                rounds.textContent = `Round ${counter}: You lose!`;
             }
-            else break;
-            while(check===-1)
-            {
-                alert("Wrong input please enter either rock, paper or scissors!");
-                playerSelection = prompt("Enter your bet:", "Rock,paper or scissors");
-                if(playerSelection!==null)
-                {
-                    playerSelection=playerSelection.toLowerCase();
-                    check=arrSelection.indexOf(playerSelection);
-                }
-                else
-                {
-                    check=3;
-                    break;
-                }
+            else if ((playerSelection === 'scissors' && computerSelection === 'paper') || (playerSelection === 'paper' && computerSelection === 'rock') || (playerSelection === 'rock' && computerSelection === 'scissors')) {
+                userScore += 1;
+                rounds.textContent = `Round ${counter}: You win!`;
             }
 
-            if(check===3) break;
+        }
+        else
+            rounds.textContent = `Round ${counter}: Uh oh! Draw`;
 
-            playRound(playerSelection,computerSelection);
-            console.log(`Round ${(i+1)} - Your score: ${userScore} | Opponent Score: ${compScore}`);
+        yourScore.textContent = `Your Score : ${userScore}`;
+        oppScore.textContent = `Opponent Score: ${compScore}`;
+
+        if (counter === 5) {
+
+            setTimeout(function () {
+                compScore < userScore ? alert('Congratulations, You win this game!') : compScore === userScore ? alert('Game over! No one wins this game') : alert('Game over! You lose!');
+            }, 200);
 
         }
-        compScore<userScore?alert('Congratulations! You win'):compScore===userScore?alert('No one wins'):alert('Uh oh! You lose');
+
     }
-    else 
-        alert("You exited the game!");
+
 }
+
+function playAgain(e) {
+    counter = 0;
+    compScore = 0;
+    userScore = 0;
+    rounds.textContent = "";
+    userImage.setAttribute('src', "");
+    compImage.setAttribute('src', "");
+    yourScore.textContent = `Your Score : ${userScore}`;
+    oppScore.textContent = `Opponent Score: ${compScore}`;
+}
+
+const imageSelection = document.querySelectorAll('.buttonHolder>img');
+imageSelection.forEach(selected => selected.addEventListener('click', playRound));
+
+const retry = document.querySelector('#retry');
+retry.addEventListener('click', playAgain);

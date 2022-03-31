@@ -1,13 +1,38 @@
 <!DOCTYPE html>
 <html lang="en>">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock, Paper and Scissors</title>
+    <title>Rock,Paper,Scissors</title>
+    <script src="./rockpaperscissors.js" defer></script>
+    <link rel="stylesheet" href="./style.css">
 </head>
-<body>
-<script src="./rockpaperscissors.js"></script>
-</body>
-</html>
 
+<body>
+    <main>
+        <p id="topPara">Rock, paper, scissors</p>
+        <h2>Please choose your bet</h2>
+        <div class="buttonHolder">
+            <img src="./images/rock.png" id="rock" alt="rock">
+            <img src="./images/paper.png" id="paper" alt="paper">
+            <img src="./images/scissors.png" id="scissors" alt="scissors">
+        </div>
+        <p id="rounds"></p>
+        <div class="interface">
+            <div class="user">
+                <img id="userSelect">
+                <p id="userScore">Your Score: 0</p>
+            </div>
+            <span id="vs">VS</span>
+            <div class="opponent">
+                <img id="compSelect">
+                <p id="oppScore">Opponent Score: 0</p>
+            </div>
+        </div>
+        <button id="retry" type="button">Play Again?</button>
+    </main>
+</body>
+
+</html>
